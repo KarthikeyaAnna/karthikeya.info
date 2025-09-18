@@ -1,38 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap');
+
+body {
+    background-color: #000;
+    color: #0f0;
+    font-family: 'Share Tech Mono', monospace;
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+
+body::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
+}
+
 .App {
-  text-align: center;
+    position: relative;
+    cursor: none;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.crt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: 
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.5) 0px, rgba(0,0,0,0.5) 1px, transparent 1px, transparent 2px),
+        repeating-linear-gradient(90deg, rgba(255,0,0,0.1) 0px, rgba(255,0,0,0.1) 1px, transparent 1px, transparent 3px),
+        repeating-linear-gradient(90deg, rgba(0,255,0,0.1) 2px, rgba(0,255,0,0.1) 3px, transparent 3px, transparent 5px),
+        repeating-linear-gradient(90deg, rgba(0,0,255,0.1) 4px, rgba(0,0,255,0.1) 5px, transparent 5px, transparent 7px);
+    pointer-events: none;
+    z-index: 9999;
+    animation: crt-flicker 0.1s infinite;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+@keyframes crt-flicker {
+    0% { opacity: 1; }
+    50% { opacity: 0.9; }
+    100% { opacity: 1; }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 150px;
 }
 
-.App-link {
-  color: #61dafb;
+@media (max-width: 768px) {
+    main {
+        padding: 0 50px;
+    }
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+@media (max-width: 480px) {
+    main {
+        padding: 0 25px;
+    }
 }

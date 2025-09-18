@@ -1,0 +1,69 @@
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: transparent;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    font-family: 'VT323', monospace;
+    box-sizing: border-box;
+}
+
+.logo {
+    font-size: 1.8em;
+    color: #ff00ff;
+    text-shadow: 0 0 10px #ff00ff;
+    flex-shrink: 0;
+}
+
+.app-header nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.app-header nav a {
+    color: #0f0;
+    text-decoration: none;
+    margin-left: 25px;
+    font-size: 1.2em;
+    transition: all 0.3s ease;
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
+}
+
+.app-header nav a:hover {
+    color: #0ff;
+    text-shadow: 0 0 5px #0ff;
+    border-bottom-color: #0ff;
+}
+
+@media (max-width: 768px) {
+    .app-header {
+        padding: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .app-header nav {
+        margin-top: 10px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .app-header nav a {
+        margin: 0 15px;
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-header nav a {
+        margin: 0 10px;
+        font-size: 1em;
+    }
+}
