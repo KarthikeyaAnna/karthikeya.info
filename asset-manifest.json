@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/karthikeya.info/static/css/main.0618c36e.css",
-    "main.js": "/karthikeya.info/static/js/main.e026e902.js",
-    "static/js/453.b869deaa.chunk.js": "/karthikeya.info/static/js/453.b869deaa.chunk.js",
-    "index.html": "/karthikeya.info/index.html",
-    "main.0618c36e.css.map": "/karthikeya.info/static/css/main.0618c36e.css.map",
-    "main.e026e902.js.map": "/karthikeya.info/static/js/main.e026e902.js.map",
-    "453.b869deaa.chunk.js.map": "/karthikeya.info/static/js/453.b869deaa.chunk.js.map"
+    "main.css": "/static/css/main.0618c36e.css",
+    "main.js": "/static/js/main.37a4057a.js",
+    "static/js/453.b869deaa.chunk.js": "/static/js/453.b869deaa.chunk.js",
+    "index.html": "/index.html",
+    "main.0618c36e.css.map": "/static/css/main.0618c36e.css.map",
+    "main.37a4057a.js.map": "/static/js/main.37a4057a.js.map",
+    "453.b869deaa.chunk.js.map": "/static/js/453.b869deaa.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.0618c36e.css",
-    "static/js/main.e026e902.js"
+    "static/js/main.37a4057a.js"
   ]
 }
