@@ -2,7 +2,7 @@
   "name": "karthikeya.info",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://KarthikeyaAnna.github.io/karthikeya.info",
+  "homepage": "https://karthikeya.info",
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",

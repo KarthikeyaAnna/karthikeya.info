@@ -4,21 +4,22 @@ import GridBackground from './GridBackground';
 
 const projects = [
     {
-        title: "Project One",
-        description: "A brief description of the project. Focus on the technology and the outcome.",
-        tags: ["React", "Node.js", "CSS-Grid"]
+        title: "Custom Database Engine (Paging + B+ Tree)",
+        description: "Designed and implemented a lightweight database engine with a page-based disk storage model. Built a B+ tree indexing layer to map keys to page numbers, separating in-memory index structures from on-disk data pages to minimize disk I/O and improve lookup efficiency.",
+        tags: ["Database Internals", "Paging", "B+ Tree", "Systems"]
     },
     {
-        title: "Project Two",
-        description: "Another project description. Explain the challenge and your solution.",
-        tags: ["Python", "Flask", "APIs"]
+        title: "Academic ERP System",
+        description: "Developed a desktop-based ERP system with role-based access control (Admin, Student, Faculty). Implemented modular components for enrollment, attendance, and grading, with persistent storage via JDBC and a modern Swing UI.",
+        tags: ["Java", "Swing", "FlatLaf", "MigLayout", "JDBC", "MySQL"]
     },
     {
-        title: "Project Three",
-        description: "A third project. This one could be about data visualization or something creative.",
-        tags: ["D3.js", "JavaScript", "HTML5"]
+        title: "AI Patient Simulation Chatbot",
+        description: "Built a Flask-based API where an AI agent simulates patient behavior using LangChain and LangGraph. Modeled conversations as a stateful graph and implemented strict session isolation to support multiple concurrent users without context leakage.",
+        tags: ["Python", "Flask", "LangGraph", "LangChain", "Agentic AI", "Vercel"]
     }
 ];
+
 
 const Projects = () => {
     return (
