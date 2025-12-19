@@ -1,0 +1,16 @@
+.typewriter-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+.typing-cursor {
+    color: #0f0;
+    animation: blink 0.7s step-end infinite;
+}
+
+@keyframes blink {
+    from, to { color: transparent; }
+    50% { color: #0f0; }
+}
