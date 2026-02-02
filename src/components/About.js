@@ -10,9 +10,9 @@ const About = () => {
                 <div className="title-line"></div>
             </div>
             <div className="about-content">
-                <Typewriter text="Hello! I'm Karthikeya ." />
+                <Typewriter text="Hello! I'm Sri Karthikeya Annavarjula." />
                 <Typewriter text="Currently persuing Btech in Computer Science from IIIT-Delhi" />
-                <Typewriter text="I specialize in Large scale Database mangement , Automation , Building Scrapers ." />
+                <Typewriter text="I specialize in Large scale Database mangement , Automation , Building Scrapers ." isLast={true} />
             </div>
         </section>
     );

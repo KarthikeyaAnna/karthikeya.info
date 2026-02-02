@@ -1,33 +1,47 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './CustomCursor.css';
 
 const CustomCursor = () => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const cursorRef = useRef(null);
     const [isHovering, setIsHovering] = useState(false);
 
     useEffect(() => {
+        // DIRECT DOM UPDATE for minimal latency
+        // Bypassing React state and RAF loops ensures the cursor updates
+        // in the same macro-task as the mouse event, critical for high-hz displays.
         const onMouseMove = (e) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            if (cursorRef.current) {
+                cursorRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
+            }
         };
 
         const onMouseOver = (e) => {
-            if (e.target.tagName === 'A' || e.target.closest('.project-card')) {
+            if (e.target.tagName === 'A' ||
+                e.target.tagName === 'BUTTON' ||
+                e.target.closest('.project-card') ||
+                e.target.closest('.theme-btn') ||
+                e.target.closest('a')) {
                 setIsHovering(true);
             }
         };
 
         const onMouseOut = (e) => {
-            if (e.target.tagName === 'A' || e.target.closest('.project-card')) {
+            if (e.target.tagName === 'A' ||
+                e.target.tagName === 'BUTTON' ||
+                e.target.closest('.project-card') ||
+                e.target.closest('.theme-btn') ||
+                e.target.closest('a')) {
                 setIsHovering(false);
             }
         };
 
-        document.addEventListener('mousemove', onMouseMove);
+        // Use 'capture' phase for mousemove to ensure we get it ASAP
+        window.addEventListener('mousemove', onMouseMove, { passive: true });
         document.addEventListener('mouseover', onMouseOver);
         document.addEventListener('mouseout', onMouseOut);
 
         return () => {
-            document.removeEventListener('mousemove', onMouseMove);
+            window.removeEventListener('mousemove', onMouseMove);
             document.removeEventListener('mouseover', onMouseOver);
             document.removeEventListener('mouseout', onMouseOut);
         };
@@ -37,8 +51,9 @@ const CustomCursor = () => {
 
     return (
         <div
+            ref={cursorRef}
             className={cursorClasses}
-            style={{ left: `${position.x}px`, top: `${position.y}px` }}
+            style={{ opacity: 1 }}
         >
             <div className="cursor-inner"></div>
         </div>

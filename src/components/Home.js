@@ -20,11 +20,11 @@ const Home = () => {
 
     return (
         <section id="home" className="home-section">
-            <div className="glitch-container" data-text={name}>
+            <h1 className="glitch-container" data-text={name}>
                 {text}
                 <span className="glitch-cursor">_</span>
-            </div>
-            <p className="subtitle">A Developer Exploring the Digital Frontier.</p>
+            </h1>
+            <p className="subtitle">Software Developer | Exploring the Digital Frontier.</p>
         </section>
     );
 }

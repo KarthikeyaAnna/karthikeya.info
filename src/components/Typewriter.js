@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Typewriter.css';
 
-const Typewriter = ({ text }) => {
+const Typewriter = ({ text, isLast = false }) => {
     const [displayedText, setDisplayedText] = useState('');
     const [isTyping, setIsTyping] = useState(true);
     const elementRef = useRef(null);
@@ -43,10 +43,13 @@ const Typewriter = ({ text }) => {
         };
     }, [text]);
 
+    // Show cursor while typing, or if this is the last line (persistent blinking)
+    const showCursor = isTyping || isLast;
+
     return (
         <p ref={elementRef} className="typewriter-text">
             {displayedText}
-            {isTyping && <span className="typing-cursor">_</span>}
+            {showCursor && <span className={`typing-cursor ${!isTyping ? 'blink' : ''}`}>▌</span>}
         </p>
     );
 };

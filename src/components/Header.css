@@ -4,7 +4,7 @@
     align-items: center;
     padding: 20px 40px;
     background: transparent;
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -14,9 +14,9 @@
 }
 
 .logo {
-    font-size: 1.8em;
-    color: #ff00ff;
-    text-shadow: 0 0 10px #ff00ff;
+    font-size: 2.2em;
+    color: var(--crt-secondary, #ff00ff);
+    text-shadow: 0 0 10px var(--crt-glow, rgba(255, 0, 255, 0.6));
     flex-shrink: 0;
 }
 
@@ -27,19 +27,30 @@
 }
 
 .app-header nav a {
-    color: #0f0;
+    color: var(--crt-primary, #0f0);
     text-decoration: none;
     margin-left: 25px;
-    font-size: 1.2em;
+    font-size: 1.6em;
     transition: all 0.3s ease;
     padding-bottom: 5px;
     border-bottom: 2px solid transparent;
 }
 
 .app-header nav a:hover {
-    color: #0ff;
-    text-shadow: 0 0 5px #0ff;
-    border-bottom-color: #0ff;
+    color: var(--crt-secondary, #0ff);
+    text-shadow: 0 0 5px var(--crt-glow, rgba(0, 255, 255, 0.6));
+    border-bottom-color: var(--crt-secondary, #0ff);
+}
+
+/* Special styling for Resume link in header */
+.resume-nav {
+    color: #ff0 !important;
+}
+
+.resume-nav:hover {
+    color: #ffa500 !important;
+    text-shadow: 0 0 5px #ffa500 !important;
+    border-bottom-color: #ffa500 !important;
 }
 
 @media (max-width: 768px) {

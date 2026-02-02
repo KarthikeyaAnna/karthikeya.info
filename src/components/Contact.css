@@ -8,14 +8,21 @@
 
 .contact-content p {
     font-size: 1.2rem;
-    color: #ccc;
+    color: rgba(var(--crt-primary-rgb), 0.8);
     margin-bottom: 30px;
+}
+
+.contact-links {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .email-link {
     display: inline-block;
-    color: #0ff;
-    border: 2px solid #0ff;
+    color: var(--crt-secondary, #0ff);
+    border: 2px solid var(--crt-secondary, #0ff);
     padding: 15px 30px;
     text-decoration: none;
     font-family: 'VT323', monospace;
@@ -24,6 +31,16 @@
 }
 
 .email-link:hover {
-    background: rgba(0, 255, 255, 0.1);
-    box-shadow: 0 0 15px #0ff;
+    background: var(--crt-glow, rgba(0, 255, 255, 0.1));
+    box-shadow: 0 0 15px var(--crt-secondary, #0ff);
+}
+
+.github-link {
+    color: var(--crt-primary, #0f0);
+    border-color: var(--crt-primary, #0f0);
+}
+
+.github-link:hover {
+    background: var(--crt-glow, rgba(0, 255, 0, 0.1));
+    box-shadow: 0 0 15px var(--crt-primary, #0f0);
 }

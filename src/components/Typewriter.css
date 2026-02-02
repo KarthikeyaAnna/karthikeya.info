@@ -6,11 +6,24 @@
 }
 
 .typing-cursor {
-    color: #0f0;
-    animation: blink 0.7s step-end infinite;
+    color: var(--crt-primary, #0f0);
+    text-shadow: 0 0 5px var(--crt-glow);
+}
+
+/* Blinking cursor after typing completes */
+.typing-cursor.blink {
+    animation: blink 1s step-end infinite;
 }
 
 @keyframes blink {
-    from, to { color: transparent; }
-    50% { color: #0f0; }
+
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    51%,
+    100% {
+        opacity: 0;
+    }
 }
