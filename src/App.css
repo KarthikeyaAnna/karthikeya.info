@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap');
+/* Fonts now preloaded in index.html for better performance */
 
 /* CSS Variables for dynamic theming */
 :root {
@@ -10,13 +10,11 @@
 }
 
 /* Force hide cursor on all elements to ensure only custom cursor is visible */
-/* Force hide cursor on all elements to ensure only custom cursor is visible */
 *,
 *::before,
 *::after {
     cursor: none !important;
     box-sizing: border-box;
-    /* Fix padding/border alignment issues globally */
 }
 
 body {
@@ -24,15 +22,12 @@ body {
     color: var(--crt-primary);
     font-family: 'Share Tech Mono', monospace;
     overflow: hidden;
-    /* Lock body scroll, handle internally */
     width: 100%;
-    /* Changed from 100vw to fix right-bias caused by scrollbar */
     height: 100vh;
     margin: 0;
 }
 
 body::-webkit-scrollbar {
-    /* WebKit */
     width: 0;
     height: 0;
 }
@@ -42,19 +37,7 @@ body::-webkit-scrollbar {
     cursor: none;
 }
 
-/* Basic CSS CRT overlay (complements WebGL effects) */
-.crt-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background:
-        repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.3) 0px, rgba(0, 0, 0, 0.3) 1px, transparent 1px, transparent 2px);
-    pointer-events: none;
-    z-index: 9997;
-    opacity: 0.5;
-}
+/* CRT overlay removed - WebGL shader handles scanlines */
 
 main {
     display: flex;
@@ -82,19 +65,21 @@ h3,
 h4,
 h5,
 h6 {
-    text-shadow: 0 0 10px var(--crt-glow);
+    text-shadow: 0 0 5px var(--crt-glow);
+    /* Reduced from 10px */
 }
 
 p,
 span,
 a {
-    text-shadow: 0 0 5px var(--crt-glow);
+    text-shadow: 0 0 3px var(--crt-glow);
+    /* Reduced from 5px */
 }
 
 /* Links use theme color */
 a {
     color: var(--crt-primary);
-    transition: all 0.3s ease;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 a:hover {

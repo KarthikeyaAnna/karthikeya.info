@@ -14,29 +14,15 @@
     background: rgba(0, 0, 0, 0.8);
     border: 1px solid var(--crt-primary, #0f0);
     padding: 25px;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 0 10px rgba(var(--crt-primary-rgb), 0.2),
-        inset 0 0 30px rgba(var(--crt-primary-rgb), 0.05);
+    box-shadow: 0 0 10px rgba(var(--crt-primary-rgb), 0.2);
+    will-change: transform, box-shadow;
+    /* GPU acceleration hint */
 }
 
-/* Scanline effect on cards */
-.project-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: repeating-linear-gradient(0deg,
-            transparent,
-            transparent 2px,
-            rgba(0, 0, 0, 0.15) 2px,
-            rgba(0, 0, 0, 0.15) 4px);
-    pointer-events: none;
-    z-index: 1;
-}
+/* Scanlines removed - WebGL provides global scanlines */
 
 /* Sweep effect on hover */
 .project-card::after {
@@ -54,8 +40,7 @@
 .project-card:hover {
     border-color: var(--crt-secondary, #0ff);
     box-shadow: 0 0 20px rgba(var(--crt-primary-rgb), 0.4),
-        0 0 40px rgba(var(--crt-primary-rgb), 0.2),
-        inset 0 0 30px rgba(var(--crt-primary-rgb), 0.1);
+        0 0 40px rgba(var(--crt-primary-rgb), 0.2);
     transform: translateY(-2px);
 }
 

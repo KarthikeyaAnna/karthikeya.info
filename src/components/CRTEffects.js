@@ -10,6 +10,7 @@ const CRTEffects = ({ settings: propSettings }) => {
     const glRef = useRef(null);
     const programRef = useRef(null);
     const animationRef = useRef(null);
+    const uniformLocationsRef = useRef(null); // Cache uniform locations for performance
 
     // Store latest settings in a ref to avoid re-creating render loop
     const settingsRef = useRef(propSettings);
@@ -36,7 +37,7 @@ const CRTEffects = ({ settings: propSettings }) => {
         }
     `;
 
-    // Fragment shader with CRT effects
+    // Fragment shader with CRT effects (curvature removed for performance)
     const fragmentShaderSource = `
         precision highp float;
         
@@ -44,7 +45,6 @@ const CRTEffects = ({ settings: propSettings }) => {
         
         uniform float u_time;
         uniform vec2 u_resolution;
-        uniform float u_curvature;
         uniform float u_scanlines;
         uniform float u_bloom;
         uniform float u_noise;
@@ -59,91 +59,67 @@ const CRTEffects = ({ settings: propSettings }) => {
             return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);
         }
         
-        vec2 distortCoordinates(vec2 coords, float curvature) {
-            vec2 cc = coords - 0.5;
-            float dist = dot(cc, cc) * curvature;
-            // INVERTED: Use subtraction to match SVG displacement semantics
-            return coords - cc * (1.0 + dist) * dist;
-        }
-        
-        float isInScreen(vec2 coords) {
-            vec2 s = step(vec2(0.0), coords) - step(vec2(1.0), coords);
-            return s.x * s.y;
-        }
-        
         void main() {
             vec2 uv = v_texCoord;
-            vec2 curvedUV = distortCoordinates(uv, u_curvature); // Curvature stays constant
-            float inScreen = isInScreen(curvedUV);
             
-            if (inScreen > 0.5) {
-                // Scanlines
-                float scanline = 1.0;
-                float scanIntensity = u_scanlines * u_intensity;
-                if (scanIntensity > 0.0) {
-                    float scanY = curvedUV.y * u_resolution.y;
-                    scanline = 1.0 - scanIntensity * 0.4 * (1.0 - abs(sin(scanY * 3.14159)));
-                }
-                
-                // Glowing line
-                float glowLine = 0.0;
-                float glowIntensity = u_glowingLine * u_intensity;
-                if (glowIntensity > 0.0) {
-                    float linePos = fract(u_time * 0.08);
-                    float lineDist = abs(curvedUV.y - linePos);
-                    glowLine = glowIntensity * smoothstep(0.015, 0.0, lineDist);
-                }
-                
-                // Noise
-                float noise = 0.0;
-                float noiseIntensity = u_noise * u_intensity;
-                if (noiseIntensity > 0.0) {
-                    noise = (rand(curvedUV + fract(u_time)) - 0.5) * noiseIntensity;
-                }
-                
-                // Flicker
-                float flicker = 1.0;
-                float flickerIntensity = u_flicker * u_intensity;
-                if (flickerIntensity > 0.0) {
-                    flicker = 1.0 - flickerIntensity * 0.3 * (0.5 + 0.5 * sin(u_time * 6.0));
-                }
-                
-                // Vignette - separate calculation
-                float vignette = 1.0;
-                if (u_vignette > 0.0) {
-                    vec2 vignetteUV = curvedUV * (1.0 - curvedUV.yx);
-                    vignette = pow(vignetteUV.x * vignetteUV.y * 15.0, u_vignette * 0.4);
-                    vignette = clamp(vignette, 0.0, 1.0);
-                }
-                
-                // Bloom
-                float bloomGlow = u_bloom * u_intensity * 0.12;
-                
-                // Combine
-                vec3 color = u_fontColor * scanline;
-                color += u_fontColor * glowLine;
-                color += u_fontColor * bloomGlow * vignette;
-                color += vec3(noise);
-                color *= flicker;
-                color *= vignette;
-                color *= u_brightness;
-                color = clamp(color, 0.0, 1.0);
-                
-                // Keep alpha low to avoid green tint
-                float alpha = 0.10 + bloomGlow * 0.3 + glowLine * 0.3;
-                alpha *= u_intensity;
-                alpha = clamp(alpha, 0.0, 0.25);
-                
-                gl_FragColor = vec4(color, alpha);
-            } else {
-                // Border glow
-                float borderDist = 1.0 - max(
-                    abs(curvedUV.x - 0.5) * 2.0,
-                    abs(curvedUV.y - 0.5) * 2.0
-                );
-                float borderGlow = smoothstep(0.0, 0.08, -borderDist) * 0.2 * u_intensity;
-                gl_FragColor = vec4(u_fontColor * borderGlow, borderGlow);
+            // Scanlines
+            float scanline = 1.0;
+            float scanIntensity = u_scanlines * u_intensity;
+            if (scanIntensity > 0.0) {
+                float scanY = uv.y * u_resolution.y;
+                scanline = 1.0 - scanIntensity * 0.4 * (1.0 - abs(sin(scanY * 3.14159)));
             }
+            
+            // Glowing line
+            float glowLine = 0.0;
+            float glowIntensity = u_glowingLine * u_intensity;
+            if (glowIntensity > 0.0) {
+                float linePos = fract(u_time * 0.08);
+                float lineDist = abs(uv.y - linePos);
+                glowLine = glowIntensity * smoothstep(0.015, 0.0, lineDist);
+            }
+            
+            // Noise
+            float noise = 0.0;
+            float noiseIntensity = u_noise * u_intensity;
+            if (noiseIntensity > 0.0) {
+                noise = (rand(uv + fract(u_time)) - 0.5) * noiseIntensity;
+            }
+            
+            // Flicker
+            float flicker = 1.0;
+            float flickerIntensity = u_flicker * u_intensity;
+            if (flickerIntensity > 0.0) {
+                flicker = 1.0 - flickerIntensity * 0.3 * (0.5 + 0.5 * sin(u_time * 6.0));
+            }
+            
+            // Vignette
+            float vignette = 1.0;
+            if (u_vignette > 0.0) {
+                vec2 vignetteUV = uv * (1.0 - uv.yx);
+                vignette = pow(vignetteUV.x * vignetteUV.y * 15.0, u_vignette * 0.4);
+                vignette = clamp(vignette, 0.0, 1.0);
+            }
+            
+            // Bloom
+            float bloomGlow = u_bloom * u_intensity * 0.12;
+            
+            // Combine
+            vec3 color = u_fontColor * scanline;
+            color += u_fontColor * glowLine;
+            color += u_fontColor * bloomGlow * vignette;
+            color += vec3(noise);
+            color *= flicker;
+            color *= vignette;
+            color *= u_brightness;
+            color = clamp(color, 0.0, 1.0);
+            
+            // Keep alpha low to avoid green tint
+            float alpha = 0.10 + bloomGlow * 0.3 + glowLine * 0.3;
+            alpha *= u_intensity;
+            alpha = clamp(alpha, 0.0, 0.25);
+            
+            gl_FragColor = vec4(color, alpha);
         }
     `;
 
@@ -188,6 +164,21 @@ const CRTEffects = ({ settings: propSettings }) => {
         }
         programRef.current = program;
 
+        // Cache uniform locations once (major performance optimization)
+        uniformLocationsRef.current = {
+            time: gl.getUniformLocation(program, 'u_time'),
+            resolution: gl.getUniformLocation(program, 'u_resolution'),
+            scanlines: gl.getUniformLocation(program, 'u_scanlines'),
+            bloom: gl.getUniformLocation(program, 'u_bloom'),
+            noise: gl.getUniformLocation(program, 'u_noise'),
+            flicker: gl.getUniformLocation(program, 'u_flicker'),
+            glowingLine: gl.getUniformLocation(program, 'u_glowingLine'),
+            vignette: gl.getUniformLocation(program, 'u_vignette'),
+            brightness: gl.getUniformLocation(program, 'u_brightness'),
+            intensity: gl.getUniformLocation(program, 'u_intensity'),
+            fontColor: gl.getUniformLocation(program, 'u_fontColor')
+        };
+
         // Create buffers
         const positions = new Float32Array([
             -1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1
@@ -230,9 +221,10 @@ const CRTEffects = ({ settings: propSettings }) => {
         const gl = glRef.current;
         const program = programRef.current;
         const canvas = canvasRef.current;
-        const settings = settingsRef.current; // Use ref to get latest settings without re-binding
+        const settings = settingsRef.current;
+        const uniforms = uniformLocationsRef.current;
 
-        if (!gl || !program || !canvas) {
+        if (!gl || !program || !canvas || !uniforms) {
             animationRef.current = requestAnimationFrame(render);
             return;
         }
@@ -252,22 +244,21 @@ const CRTEffects = ({ settings: propSettings }) => {
 
         const mult = effectMultiplierRef.current;
 
-        // Set uniforms
-        gl.uniform1f(gl.getUniformLocation(program, 'u_time'), timeRef.current);
-        gl.uniform2f(gl.getUniformLocation(program, 'u_resolution'), canvas.width, canvas.height);
-        gl.uniform1f(gl.getUniformLocation(program, 'u_curvature'), settings.curvature);
-        gl.uniform1f(gl.getUniformLocation(program, 'u_scanlines'), settings.scanlines);
-        gl.uniform1f(gl.getUniformLocation(program, 'u_bloom'), settings.bloom);
-        gl.uniform1f(gl.getUniformLocation(program, 'u_noise'), settings.noise);
-        gl.uniform1f(gl.getUniformLocation(program, 'u_flicker'), settings.flicker);
-        gl.uniform1f(gl.getUniformLocation(program, 'u_glowingLine'), settings.glowingLine);
-        gl.uniform1f(gl.getUniformLocation(program, 'u_vignette'), settings.vignette);
-        gl.uniform1f(gl.getUniformLocation(program, 'u_brightness'), settings.brightness);
-        gl.uniform1f(gl.getUniformLocation(program, 'u_intensity'), mult);
+        // Set uniforms using cached locations (major perf win)
+        gl.uniform1f(uniforms.time, timeRef.current);
+        gl.uniform2f(uniforms.resolution, canvas.width, canvas.height);
+        gl.uniform1f(uniforms.scanlines, settings.scanlines);
+        gl.uniform1f(uniforms.bloom, settings.bloom);
+        gl.uniform1f(uniforms.noise, settings.noise);
+        gl.uniform1f(uniforms.flicker, settings.flicker);
+        gl.uniform1f(uniforms.glowingLine, settings.glowingLine);
+        gl.uniform1f(uniforms.vignette, settings.vignette);
+        gl.uniform1f(uniforms.brightness, settings.brightness);
+        gl.uniform1f(uniforms.intensity, mult);
 
         // Handle font color array safely
         const fc = settings.fontColor || [0, 1, 0];
-        gl.uniform3f(gl.getUniformLocation(program, 'u_fontColor'), fc[0], fc[1], fc[2]);
+        gl.uniform3f(uniforms.fontColor, fc[0], fc[1], fc[2]);
 
         gl.drawArrays(gl.TRIANGLES, 0, 6);
 
@@ -288,15 +279,23 @@ const CRTEffects = ({ settings: propSettings }) => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Initialize and start
+    // Initialize and start - DEFERRED to not block initial render
     useEffect(() => {
-        initWebGL();
-        resize();
+        // Defer WebGL initialization until browser is idle
+        const idleCallback = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
 
-        window.addEventListener('resize', resize);
-        animationRef.current = requestAnimationFrame(render);
+        const initId = idleCallback(() => {
+            initWebGL();
+            resize();
+
+            window.addEventListener('resize', resize);
+            animationRef.current = requestAnimationFrame(render);
+        }, { timeout: 100 }); // Fallback timeout after 100ms
 
         return () => {
+            if (window.cancelIdleCallback) {
+                window.cancelIdleCallback(initId);
+            }
             window.removeEventListener('resize', resize);
             if (animationRef.current) {
                 cancelAnimationFrame(animationRef.current);

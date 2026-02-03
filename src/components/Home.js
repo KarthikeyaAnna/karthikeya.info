@@ -1,21 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Home.css';
 
 const Home = () => {
     const [text, setText] = useState('');
     const name = 'KARTHIKEYA';
+    const intervalRef = useRef(null);
 
     useEffect(() => {
         let currentIndex = 0;
-        const interval = setInterval(() => {
+
+        intervalRef.current = setInterval(() => {
             if (currentIndex <= name.length) {
                 setText(name.substring(0, currentIndex));
                 currentIndex++;
             } else {
-                clearInterval(interval);
+                clearInterval(intervalRef.current);
             }
         }, 200);
-        return () => clearInterval(interval);
+
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+            }
+        };
     }, []);
 
     return (

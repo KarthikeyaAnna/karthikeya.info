@@ -9,6 +9,14 @@ import About from './components/About';
 import Footer from './components/Footer';
 import CRTEffects from './components/CRTEffects';
 
+// Helper to convert hex to rgb string "r, g, b" - defined once, reused
+const hexToRgb = (hex) => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `${r}, ${g}, ${b}`;
+};
+
 const App = () => {
     // Fixed settings - green theme, default CRT effects, no curvature
     const settings = useMemo(() => ({
@@ -34,14 +42,6 @@ const App = () => {
     // Apply green theme colors to CSS variables
     useEffect(() => {
         const root = document.documentElement;
-
-        // Helper to convert hex to rgb string "r, g, b"
-        const hexToRgb = (hex) => {
-            const r = parseInt(hex.slice(1, 3), 16);
-            const g = parseInt(hex.slice(3, 5), 16);
-            const b = parseInt(hex.slice(5, 7), 16);
-            return `${r}, ${g}, ${b}`;
-        };
 
         root.style.setProperty('--crt-primary', greenTheme.primary);
         root.style.setProperty('--crt-secondary', greenTheme.secondary);
@@ -70,8 +70,6 @@ const App = () => {
     return (
         <div className="App">
             <CRTEffects settings={crtSettings} />
-            <div className="crt-overlay"></div>
-
             {/* Main content container - no curvature filter */}
             <div className="crt-content-container" style={{
                 width: '100%',
@@ -88,7 +86,9 @@ const App = () => {
                     overflowY: 'auto',
                     overflowX: 'hidden',
                     scrollbarWidth: 'none',
-                    paddingTop: '80px'
+                    paddingTop: '80px',
+                    transform: 'translateZ(0)',
+                    willChange: 'scroll-position'
                 }}>
                     <main>
                         <Home />

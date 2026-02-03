@@ -6,6 +6,7 @@ const Typewriter = ({ text, isLast = false }) => {
     const [isTyping, setIsTyping] = useState(true);
     const elementRef = useRef(null);
     const observerRef = useRef(null);
+    const intervalRef = useRef(null); // Track interval for cleanup
 
     useEffect(() => {
         const options = {
@@ -18,13 +19,13 @@ const Typewriter = ({ text, isLast = false }) => {
             const [entry] = entries;
             if (entry.isIntersecting) {
                 let i = 0;
-                const interval = setInterval(() => {
+                intervalRef.current = setInterval(() => {
                     if (i < text.length) {
                         setDisplayedText(text.substring(0, i + 1));
                         i++;
                     } else {
                         setIsTyping(false);
-                        clearInterval(interval);
+                        clearInterval(intervalRef.current);
                     }
                 }, 25);
                 observerRef.current.disconnect();
@@ -39,6 +40,9 @@ const Typewriter = ({ text, isLast = false }) => {
         return () => {
             if (observerRef.current) {
                 observerRef.current.disconnect();
+            }
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
             }
         };
     }, [text]);

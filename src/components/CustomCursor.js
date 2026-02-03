@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './CustomCursor.css';
 
 const CustomCursor = () => {
     const cursorRef = useRef(null);
-    const [isHovering, setIsHovering] = useState(false);
 
     useEffect(() => {
         // DIRECT DOM UPDATE for minimal latency
@@ -15,23 +14,28 @@ const CustomCursor = () => {
             }
         };
 
+        // Direct DOM class toggle - no React re-renders!
         const onMouseOver = (e) => {
-            if (e.target.tagName === 'A' ||
+            if (cursorRef.current && (
+                e.target.tagName === 'A' ||
                 e.target.tagName === 'BUTTON' ||
                 e.target.closest('.project-card') ||
                 e.target.closest('.theme-btn') ||
-                e.target.closest('a')) {
-                setIsHovering(true);
+                e.target.closest('a')
+            )) {
+                cursorRef.current.classList.add('hover');
             }
         };
 
         const onMouseOut = (e) => {
-            if (e.target.tagName === 'A' ||
+            if (cursorRef.current && (
+                e.target.tagName === 'A' ||
                 e.target.tagName === 'BUTTON' ||
                 e.target.closest('.project-card') ||
                 e.target.closest('.theme-btn') ||
-                e.target.closest('a')) {
-                setIsHovering(false);
+                e.target.closest('a')
+            )) {
+                cursorRef.current.classList.remove('hover');
             }
         };
 
@@ -47,12 +51,10 @@ const CustomCursor = () => {
         };
     }, []);
 
-    const cursorClasses = `custom-cursor ${isHovering ? 'hover' : ''}`;
-
     return (
         <div
             ref={cursorRef}
-            className={cursorClasses}
+            className="custom-cursor"
             style={{ opacity: 1 }}
         >
             <div className="cursor-inner"></div>
