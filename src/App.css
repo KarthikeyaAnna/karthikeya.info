@@ -97,3 +97,17 @@ a:hover {
     background: var(--crt-primary);
     color: #000;
 }
+
+/* Global blink animation - reused across components */
+@keyframes blink {
+
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    51%,
+    100% {
+        opacity: 0;
+    }
+}

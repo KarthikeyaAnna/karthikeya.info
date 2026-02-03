@@ -1,40 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import './ScrollAnimation.css';
 
 const ScrollAnimation = ({ children }) => {
-    const [isVisible, setIsVisible] = useState(false);
-    const elementRef = useRef(null);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                    observer.unobserve(elementRef.current);
-                }
-            },
-            {
-                threshold: 0.1,
-            }
-        );
-
-        const currentElement = elementRef.current;
-        if (currentElement) {
-            observer.observe(currentElement);
-        }
-
-        return () => {
-            if (currentElement) {
-                observer.unobserve(currentElement);
-            }
-        };
-    }, []);
-
+    // Always visible - no lazy loading
     return (
-        <div
-            ref={elementRef}
-            className={`scroll-animation ${isVisible ? 'is-visible' : ''}`}
-        >
+        <div className="scroll-animation is-visible">
             {children}
         </div>
     );

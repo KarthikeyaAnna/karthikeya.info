@@ -279,23 +279,15 @@ const CRTEffects = ({ settings: propSettings }) => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Initialize and start - DEFERRED to not block initial render
+    // Initialize immediately
     useEffect(() => {
-        // Defer WebGL initialization until browser is idle
-        const idleCallback = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+        initWebGL();
+        resize();
 
-        const initId = idleCallback(() => {
-            initWebGL();
-            resize();
-
-            window.addEventListener('resize', resize);
-            animationRef.current = requestAnimationFrame(render);
-        }, { timeout: 100 }); // Fallback timeout after 100ms
+        window.addEventListener('resize', resize);
+        animationRef.current = requestAnimationFrame(render);
 
         return () => {
-            if (window.cancelIdleCallback) {
-                window.cancelIdleCallback(initId);
-            }
             window.removeEventListener('resize', resize);
             if (animationRef.current) {
                 cancelAnimationFrame(animationRef.current);

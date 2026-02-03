@@ -100,7 +100,7 @@
     font-family: 'VT323', monospace;
     border: 1px solid rgba(var(--crt-primary-rgb), 0.5);
     text-shadow: 0 0 3px var(--crt-glow);
-    transition: all 0.2s ease;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .project-tags span:hover {
@@ -118,15 +118,4 @@
     text-shadow: 0 0 5px var(--crt-glow);
 }
 
-@keyframes blink {
-
-    0%,
-    50% {
-        opacity: 1;
-    }
-
-    51%,
-    100% {
-        opacity: 0;
-    }
-}
+/* blink animation defined in App.css */

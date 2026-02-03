@@ -4,43 +4,22 @@ import './Typewriter.css';
 const Typewriter = ({ text, isLast = false }) => {
     const [displayedText, setDisplayedText] = useState('');
     const [isTyping, setIsTyping] = useState(true);
-    const elementRef = useRef(null);
-    const observerRef = useRef(null);
-    const intervalRef = useRef(null); // Track interval for cleanup
+    const intervalRef = useRef(null);
 
     useEffect(() => {
-        const options = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1,
-        };
-
-        const callback = (entries) => {
-            const [entry] = entries;
-            if (entry.isIntersecting) {
-                let i = 0;
-                intervalRef.current = setInterval(() => {
-                    if (i < text.length) {
-                        setDisplayedText(text.substring(0, i + 1));
-                        i++;
-                    } else {
-                        setIsTyping(false);
-                        clearInterval(intervalRef.current);
-                    }
-                }, 25);
-                observerRef.current.disconnect();
+        // Start typing immediately
+        let i = 0;
+        intervalRef.current = setInterval(() => {
+            if (i < text.length) {
+                setDisplayedText(text.substring(0, i + 1));
+                i++;
+            } else {
+                setIsTyping(false);
+                clearInterval(intervalRef.current);
             }
-        };
-
-        observerRef.current = new IntersectionObserver(callback, options);
-        if (elementRef.current) {
-            observerRef.current.observe(elementRef.current);
-        }
+        }, 40);
 
         return () => {
-            if (observerRef.current) {
-                observerRef.current.disconnect();
-            }
             if (intervalRef.current) {
                 clearInterval(intervalRef.current);
             }
@@ -51,7 +30,7 @@ const Typewriter = ({ text, isLast = false }) => {
     const showCursor = isTyping || isLast;
 
     return (
-        <p ref={elementRef} className="typewriter-text">
+        <p className="typewriter-text">
             {displayedText}
             {showCursor && <span className={`typing-cursor ${!isTyping ? 'blink' : ''}`}>▌</span>}
         </p>
