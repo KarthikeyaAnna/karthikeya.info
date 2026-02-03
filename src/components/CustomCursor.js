@@ -5,6 +5,11 @@ const CustomCursor = () => {
     const cursorRef = useRef(null);
 
     useEffect(() => {
+        // Disable on touch devices
+        if (window.matchMedia("(pointer: coarse)").matches) {
+            return;
+        }
+
         // DIRECT DOM UPDATE for minimal latency
         // Bypassing React state and RAF loops ensures the cursor updates
         // in the same macro-task as the mouse event, critical for high-hz displays.

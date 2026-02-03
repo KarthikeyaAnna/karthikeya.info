@@ -280,12 +280,23 @@ const CRTEffects = ({ settings: propSettings }) => {
     }, []);
 
     // Initialize immediately
+    // Initialize with a slight delay to prevent TBT (Total Blocking Time)
     useEffect(() => {
-        initWebGL();
-        resize();
+        const init = () => {
+            initWebGL();
+            resize();
+            window.addEventListener('resize', resize);
+            animationRef.current = requestAnimationFrame(render);
+        };
 
-        window.addEventListener('resize', resize);
-        animationRef.current = requestAnimationFrame(render);
+        // Defer WebGL Init
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => {
+                init();
+            });
+        } else {
+            setTimeout(init, 100);
+        }
 
         return () => {
             window.removeEventListener('resize', resize);
