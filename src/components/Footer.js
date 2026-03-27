@@ -15,9 +15,6 @@ const Footer = () => {
                     <a href="mailto:karthikeyaannavarjula@gmail.com" className="social-link">
                         <span className="social-icon">Email</span>
                     </a>
-                    <a href="/resume.pdf" download="Sri_Karthikeya_Resume.pdf" className="social-link resume-link">
-                        <span className="social-icon">Resume</span>
-                    </a>
                 </div>
                 <div className="footer-text">
                     <p>© 2026 Sri Karthikeya Annavarjula</p>
