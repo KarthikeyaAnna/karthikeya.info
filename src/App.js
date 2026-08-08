@@ -54,6 +54,15 @@ const projects = [
   }
 ];
 
+const honors = [
+  {
+    year: "2026",
+    title: "Amazon ML Summer School Mentee",
+    org: "Amazon India",
+    desc: "Selected for intensive Machine Learning mentorship by Amazon ML scientists, focusing on deep learning architectures, reinforcement learning, and large-scale deployment."
+  }
+];
+
 const ArrowUpRight = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="link-arrow">
     <line x1="7" y1="17" x2="17" y2="7"></line>
@@ -134,6 +143,24 @@ const App = () => {
               </div>
             </div>
 
+          </div>
+        </section>
+
+        {/* HONORS & PROGRAMS */}
+        <section className="content-section">
+          <h2 className="section-title">Honors & Programs</h2>
+          
+          <div className="timeline-list">
+            {honors.map((item, index) => (
+              <div className="timeline-row" key={index}>
+                <div className="timeline-date">{item.year}</div>
+                <div className="timeline-body">
+                  <h3 className="role-title">{item.title}</h3>
+                  <div className="org-name">{item.org}</div>
+                  {item.desc && <p className="role-desc">{item.desc}</p>}
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
