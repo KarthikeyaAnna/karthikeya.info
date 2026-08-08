@@ -3,6 +3,14 @@ import './App.css';
 
 const projects = [
   {
+    title: "Qwen2-VL DPO-LoRA: Vision-Language Preference Alignment",
+    description: "Fine-tuned Qwen2-VL-2B using Direct Preference Optimization (DPO) and LoRA (r=16, α=32) on the HA-DPO dataset to eliminate visual hallucinations. Configured SDPA attention and targeted LoRA adapters across language projections (q, k, v, o, gate, up, down) while freezing vision towers, leveraging bfloat16 mixed-precision and Paged-AdamW-8bit optimization. Evaluated on the POPE benchmark: boosted accuracy to 89.5% and F1-score to 88.1%, reducing hallucination rate to <8.0% (from 24.5%) and eliminating Yes-Bias. Published open-source LoRA adapter weights on HuggingFace.",
+    tags: ["PyTorch", "Transformers", "DPO", "LoRA", "PEFT", "TRL", "Vision-Language", "HuggingFace"],
+    url: "https://github.com/KarthikeyaAnna/Qwen-LoRa",
+    github: "https://github.com/KarthikeyaAnna/Qwen-LoRa",
+    huggingface: "https://huggingface.co/srianna/Qwen2-VL-2B-DPO-LoRA"
+  },
+  {
     title: "Dog GAN",
     description: "Engineered a custom high-capacity GAN architecture integrating Spectral Normalization, multi-scale Self-Attention, and EMA to generate high-fidelity AFHQ animal faces. Improved training stability by mitigating mode collapse and checkerboard artifacts using R1 Gradient Penalty, DiffAugment, and Global Average Pooling. Optimized training with Automatic Mixed Precision (AMP), reducing GPU memory consumption by 30%+.",
     tags: ["Python", "PyTorch", "HuggingFace", "GAN", "Computer Vision"],
@@ -52,6 +60,11 @@ const GithubIcon = () => (
   </svg>
 );
 
+const HuggingFaceIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-3.5 8a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm7 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm-7.5 4.5c1 1.5 3 2 4 2s3-.5 4-2"></path>
+  </svg>
+);
 
 const App = () => {
   return (
@@ -77,11 +90,15 @@ const App = () => {
               <div className="project-meta">
                 <div className="project-links">
                   {project.github && (
-                    <a href={project.github} className="icon-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
+                    <a href={project.github} className="icon-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository" title="GitHub Repository">
                       <GithubIcon />
                     </a>
                   )}
-
+                  {project.huggingface && (
+                    <a href={project.huggingface} className="icon-link" target="_blank" rel="noopener noreferrer" aria-label="HuggingFace Model" title="HuggingFace Model">
+                      <HuggingFaceIcon />
+                    </a>
+                  )}
                 </div>
                 
                 <div className="project-tags">
