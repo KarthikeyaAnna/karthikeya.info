@@ -104,7 +104,6 @@ const App = () => {
           <nav className="nav-links">
             <a href="https://github.com/KarthikeyaAnna" target="_blank" rel="noopener noreferrer">GitHub</a>
             <a href="https://leetcode.com/u/SigmaBoiiii/" target="_blank" rel="noopener noreferrer">LeetCode</a>
-            <a href="mailto:karthikeyaannavarjula@gmail.com">Email</a>
             <button className={`nav-tab ${activeTab === 'blog' ? 'active' : ''}`} onClick={() => setActiveTab('blog')}>
               Blog
             </button>
