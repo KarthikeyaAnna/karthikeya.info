@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
 const projects = [
@@ -57,9 +57,21 @@ const projects = [
 const honors = [
   {
     year: "2026",
-    title: "Amazon ML Summer School Mentee",
+    title: "Amazon ML Summer School Scholar",
     org: "Amazon India",
     desc: "Selected for intensive Machine Learning mentorship by Amazon ML scientists, focusing on deep learning architectures, reinforcement learning, and large-scale deployment."
+  }
+];
+
+const blogPosts = [
+  {
+    id: "ddpm-math",
+    title: "DDPM — The Complete Mathematics: From First Principles to the Final Training Loss",
+    subtitle: "A complete, 17-section first-principles derivation of Denoising Diffusion Probabilistic Models — forward process, direct sampling shortcut, ELBO, Bayes' rule unrolling, Gaussian KL divergence, conditional mean equivalence, and MSE noise prediction loss.",
+    date: "Aug 2026",
+    readTime: "25 min read",
+    tags: ["Diffusion Models", "Mathematics", "Generative AI"],
+    pdfUrl: "/DDPM.pdf"
   }
 ];
 
@@ -70,133 +82,192 @@ const ArrowUpRight = () => (
   </svg>
 );
 
+const ArrowLeft = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="back-arrow-icon">
+    <line x1="19" y1="12" x2="5" y2="12"></line>
+    <polyline points="12 19 5 12 12 5"></polyline>
+  </svg>
+);
+
 const App = () => {
+  const [activeTab, setActiveTab] = useState('portfolio');
+
   return (
     <div className="App">
       <div className="portfolio-wrapper">
         
         {/* TOP HEADER & NAVIGATION */}
         <header className="header-nav">
-          <div className="brand-title">Sri Karthikeya</div>
+          <div className="brand-title" onClick={() => setActiveTab('portfolio')} style={{ cursor: 'pointer' }}>
+            Sri Karthikeya
+          </div>
           <nav className="nav-links">
             <a href="https://github.com/KarthikeyaAnna" target="_blank" rel="noopener noreferrer">GitHub</a>
             <a href="https://leetcode.com/u/SigmaBoiiii/" target="_blank" rel="noopener noreferrer">LeetCode</a>
             <a href="mailto:karthikeyaannavarjula@gmail.com">Email</a>
+            <button className={`nav-tab ${activeTab === 'blog' ? 'active' : ''}`} onClick={() => setActiveTab('blog')}>
+              Blog
+            </button>
           </nav>
         </header>
 
-        {/* HERO INTRO */}
-        <section className="hero-section">
-          <h1 className="hero-name">Sri Karthikeya Annavarjula</h1>
-          <p className="hero-bio">
-            Undergraduate Researcher & CS Student at <strong>IIIT-Delhi</strong>.<br />
-            Specializing in Deep Learning, Vision-Language Models, and Systems Architecture.
-          </p>
-        </section>
+        {/* MAIN PORTFOLIO VIEW */}
+        {activeTab === 'portfolio' && (
+          <>
+            {/* HERO INTRO */}
+            <section className="hero-section">
+              <h1 className="hero-name">Sri Karthikeya Annavarjula</h1>
+              <p className="hero-bio">
+                Undergraduate Researcher & CS Student at <strong>IIIT-Delhi</strong>.<br />
+                Specializing in Deep Learning, Vision-Language Models, and Systems Architecture.
+              </p>
+            </section>
 
-        {/* RESEARCH & EXPERIENCE */}
-        <section className="content-section">
-          <h2 className="section-title">Research & Experience</h2>
-          
-          <div className="timeline-list">
-            
-            {/* ITEM 1: CAI RESEARCH */}
-            <div className="timeline-row">
-              <div className="timeline-date">Aug 2026 – Present</div>
-              <div className="timeline-body">
-                <h3 className="role-title">Undergraduate Researcher</h3>
-                <div className="org-name">Infosys Centre for Artificial Intelligence (CAI) · IIIT-Delhi</div>
-                
-                <div className="labs-grid">
-                  <div className="lab-entry">
-                    <div className="lab-head">
-                      <span className="lab-tag">MIDAS Lab</span>
-                      <span className="lab-sub">Multimodal Digital Media Analysis Lab</span>
+            {/* RESEARCH & EXPERIENCE */}
+            <section className="content-section">
+              <h2 className="section-title">Research & Experience</h2>
+              
+              <div className="timeline-list">
+                <div className="timeline-row">
+                  <div className="timeline-date">Aug 2026 – Present</div>
+                  <div className="timeline-body">
+                    <h3 className="role-title">Undergraduate Researcher</h3>
+                    <div className="org-name">Infosys Centre for Artificial Intelligence (CAI) · IIIT-Delhi</div>
+                    
+                    <div className="labs-grid">
+                      <div className="lab-entry">
+                        <div className="lab-head">
+                          <span className="lab-tag">MIDAS Lab</span>
+                          <span className="lab-sub">Multimodal Digital Media Analysis Lab</span>
+                        </div>
+                        <p className="lab-text">
+                          Researching multimodal deep learning, vision-language preference alignment (DPO), and visual hallucination reduction.
+                        </p>
+                      </div>
+
+                      <div className="lab-entry">
+                        <div className="lab-head">
+                          <span className="lab-tag">SBI Lab</span>
+                          <span className="lab-sub">Systems & Biomedical Informatics Lab</span>
+                        </div>
+                        <p className="lab-text">
+                          Focusing on healthcare AI modeling, spatiotemporal feature engineering, and clinical decision support systems.
+                        </p>
+                      </div>
                     </div>
-                    <p className="lab-text">
-                      Researching multimodal deep learning, vision-language preference alignment (DPO), and visual hallucination reduction.
-                    </p>
                   </div>
+                </div>
 
-                  <div className="lab-entry">
-                    <div className="lab-head">
-                      <span className="lab-tag">SBI Lab</span>
-                      <span className="lab-sub">Systems & Biomedical Informatics Lab</span>
-                    </div>
-                    <p className="lab-text">
-                      Focusing on healthcare AI modeling, spatiotemporal feature engineering, and clinical decision support systems.
+                <div className="timeline-row">
+                  <div className="timeline-date">2024 – Present</div>
+                  <div className="timeline-body">
+                    <h3 className="role-title">B.Tech in Computer Science & Engineering</h3>
+                    <div className="org-name">Indraprastha Institute of Information Technology (IIIT-Delhi)</div>
+                    <p className="role-desc">
+                      Core coursework in Deep Learning, Systems Programming, Database Systems, Computer Architecture, DSA, and OS.
                     </p>
                   </div>
                 </div>
               </div>
-            </div>
+            </section>
 
-            {/* ITEM 2: EDUCATION */}
-            <div className="timeline-row">
-              <div className="timeline-date">2024 – Present</div>
-              <div className="timeline-body">
-                <h3 className="role-title">B.Tech in Computer Science & Engineering</h3>
-                <div className="org-name">Indraprastha Institute of Information Technology (IIIT-Delhi)</div>
-                <p className="role-desc">
-                  Core coursework in Deep Learning, Systems Programming, Database Systems, Computer Architecture, DSA, and OS.
-                </p>
+            {/* HONORS & PROGRAMS */}
+            <section className="content-section">
+              <h2 className="section-title">Honors & Programs</h2>
+              
+              <div className="timeline-list">
+                {honors.map((item, index) => (
+                  <div className="timeline-row" key={index}>
+                    <div className="timeline-date">{item.year}</div>
+                    <div className="timeline-body">
+                      <h3 className="role-title">{item.title}</h3>
+                      <div className="org-name">{item.org}</div>
+                      {item.desc && <p className="role-desc">{item.desc}</p>}
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
+            </section>
 
-          </div>
-        </section>
+            {/* FEATURED PROJECTS */}
+            <section className="content-section">
+              <h2 className="section-title">Featured Projects</h2>
+              
+              <div className="projects-list">
+                {projects.map((project, index) => (
+                  <article className="project-row" key={index}>
+                    <div className="project-header-line">
+                      <a href={project.url} target="_blank" rel="noopener noreferrer" className="project-heading">
+                        {project.title} <ArrowUpRight />
+                      </a>
+                      
+                      <div className="project-quick-links">
+                        {project.github && (
+                          <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-link">code</a>
+                        )}
+                        {project.huggingface && (
+                          <a href={project.huggingface} target="_blank" rel="noopener noreferrer" className="text-link">model</a>
+                        )}
+                      </div>
+                    </div>
 
-        {/* HONORS & PROGRAMS */}
-        <section className="content-section">
-          <h2 className="section-title">Honors & Programs</h2>
-          
-          <div className="timeline-list">
-            {honors.map((item, index) => (
-              <div className="timeline-row" key={index}>
-                <div className="timeline-date">{item.year}</div>
-                <div className="timeline-body">
-                  <h3 className="role-title">{item.title}</h3>
-                  <div className="org-name">{item.org}</div>
-                  {item.desc && <p className="role-desc">{item.desc}</p>}
-                </div>
+                    <p className="project-summary">{project.description}</p>
+                    
+                    <div className="project-tag-row">
+                      {project.tags.map((tag, i) => (
+                        <span className="inline-tag" key={i}>{tag}</span>
+                      ))}
+                    </div>
+                  </article>
+                ))}
               </div>
-            ))}
-          </div>
-        </section>
+            </section>
+          </>
+        )}
 
-        {/* FEATURED PROJECTS */}
-        <section className="content-section">
-          <h2 className="section-title">Featured Projects</h2>
-          
-          <div className="projects-list">
-            {projects.map((project, index) => (
-              <article className="project-row" key={index}>
-                <div className="project-header-line">
-                  <a href={project.url} target="_blank" rel="noopener noreferrer" className="project-heading">
-                    {project.title} <ArrowUpRight />
-                  </a>
+        {/* BLOG INDEX VIEW */}
+        {activeTab === 'blog' && (
+          <section className="content-section">
+            <div className="blog-title-header-row">
+              <button className="back-arrow-btn" onClick={() => setActiveTab('portfolio')} title="Back to Portfolio" aria-label="Back to Portfolio">
+                <ArrowLeft />
+              </button>
+              <h1 className="hero-name" style={{ fontSize: '2rem', margin: 0 }}>Writing & Technical Deep Dives</h1>
+            </div>
+            <p className="hero-bio" style={{ marginBottom: '40px', marginTop: '12px' }}>
+              Rigorous first-principles derivations and research notes on generative AI, machine learning, and computer systems.
+            </p>
+
+            <div className="projects-list">
+              {blogPosts.map((post) => (
+                <a
+                  key={post.id}
+                  href={post.pdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="project-row blog-card"
+                  style={{ textDecoration: 'none', display: 'block' }}
+                >
+                  <div className="project-header-line">
+                    <h3 className="project-heading">
+                      {post.title} <ArrowUpRight />
+                    </h3>
+                    <span className="text-link">{post.date}</span>
+                  </div>
+
+                  <p className="project-summary">{post.subtitle}</p>
                   
-                  <div className="project-quick-links">
-                    {project.github && (
-                      <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-link">code</a>
-                    )}
-                    {project.huggingface && (
-                      <a href={project.huggingface} target="_blank" rel="noopener noreferrer" className="text-link">model</a>
-                    )}
+                  <div className="project-tag-row">
+                    <span className="inline-tag read-time">{post.readTime}</span>
+                    {post.tags.map((tag, i) => (
+                      <span className="inline-tag" key={i}>{tag}</span>
+                    ))}
                   </div>
-                </div>
-
-                <p className="project-summary">{project.description}</p>
-                
-                <div className="project-tag-row">
-                  {project.tags.map((tag, i) => (
-                    <span className="inline-tag" key={i}>{tag}</span>
-                  ))}
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* FOOTER */}
         <footer className="site-footer">
